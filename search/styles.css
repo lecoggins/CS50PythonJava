@@ -55,12 +55,17 @@ ul
     overflow: hidden;
 }
 
-li
+li a
 {
     float: right;
     display: block;
-    color: grey;
+    color: rgb(46, 46, 46);
     text-align: center;
     padding: 16px;
     text-decoration: none;
+}
+
+li a:hover
+{
+    text-decoration: underline;
 }
