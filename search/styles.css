@@ -3,11 +3,12 @@ body
 {
     font-family: sans-serif;
     text-align: center;
+    font-weight: normal;
 }
 
 h1
 {
-    font-size: 40px
+    font-size: 140px
 }
 
 /* Colors for google */
