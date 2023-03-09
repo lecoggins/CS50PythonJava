@@ -1,0 +1,45 @@
+/* text font and alignment*/
+body
+{
+    font-family: sans-serif;
+    text-align: center;
+}
+
+h1
+{
+    font-size: 40px
+}
+
+/* Colors for google */
+.blue
+{
+    color: #4285F4;
+}
+
+.red
+{
+    color: #DB4437;
+}
+
+.yellow
+{
+    color: #F4B400;
+}
+
+.green
+{
+    color: #0F9D58;
+}
+
+input[type=button], input[type=submit]
+{
+    background-color: #F5F5F5;
+    border: none;
+    color: black;
+    font-weight: bold;
+}
+
+input[type=button]:hover, input[type=submit]:hover
+{
+    border: 1px solid #D3D3D3;
+}
