@@ -10,12 +10,15 @@
         <ul class="nav">
             <li class="nav-item"><a class="nav-link" href="index.html">Google search</a></li>
         </ul>
-        <div class="space">
-            <img width="400"src="googleImages.jpeg" alt="Google images logo">
+        <div class="centerD">
+            <img class="space" width="400"src="googleImages.jpeg" alt="Google logo">
+        </div>
             <form action="https://www.google.com/search">
                 <input type="text" class="searchBox" name="q">
-                <input type="submit" value="Google Search">
+                <input type="hidden" name="tbm" value="isch">
+                <div class="centerD">
+                    <input type="submit" class="submitBtn" value="Image Search">
+                </div>
             </form>
-        </div>
     </body>
 </html>

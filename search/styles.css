@@ -42,12 +42,20 @@ form
 
 .searchBox
 {
+    position: flex;
     width: 584px;
     height: 40px;
     border-radius: 24px;
     box-shadow: none;
     border: 1px solid #D3D3D3;
     margin-top: 15px;
+    font-size: 14px;
+}
+
+.searchBox:focus
+{
+    outline: none;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 input[type=submit]
@@ -62,6 +70,7 @@ input[type=submit]
     width: 130px;
     height: 35px;
     font-size: 14px;
+    margin-top: 15px;
 }
 
 input[type=submit]:hover
@@ -95,7 +104,7 @@ li a:hover
 .space
 {
     position: relative;
-    top: 130px;
+    margin-top: 120px;
 }
 
 .centerD
