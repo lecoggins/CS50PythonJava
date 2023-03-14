@@ -13,6 +13,16 @@ h1
     font-size: 100px;
 }
 
+.advancedHeading
+{
+    color: #c53a2d;
+    font-weight: normal;
+    text-align: left;
+    margin-left: 40px;
+    font-size: 20px;
+
+}
+
 /* Colors for google */
 .blue
 {
@@ -34,10 +44,18 @@ h1
     color: #0F9D58;
 }
 
-form
+.searchForm
 {
     position: relative;
     align-self: center;
+}
+
+.advancedForm
+{
+    position: relative;
+    align-self: left;
+    display: inline-block;
+    flex-direction: column;  
 }
 
 .searchBox
@@ -58,7 +76,19 @@ form
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-input[type=submit]
+.aSearchInput
+{
+    position: flex;
+    width: 585px;
+    height: 30px;
+    border-radius: 2px;
+    box-shadow: none;
+    border: 1px solid #D3D3D3;
+    font-size: 14px;
+    align-items: center;
+}
+
+.searchSubmit
 {
     background-color: #F5F5F5;
     border: none;
@@ -73,9 +103,29 @@ input[type=submit]
     margin-top: 15px;
 }
 
-input[type=submit]:hover
+.searchSubmit:hover
 {
     border: 1px solid #D3D3D3;
+}
+
+.advancedSubmit
+{
+    background-color: #4285F4;
+    border: none;
+    border-radius: 2px%;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 16px;
+    width: 160px;
+    height: 35px;
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+.advancedSubmit:hover
+{
+    background-color:#397ff0;
 }
 
 ul
@@ -112,4 +162,34 @@ li a:hover
     display:flex;
     justify-content:center;
     align-items: center;
+}
+
+.leftD
+{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    margin: 40px;
+}
+
+.leftD1
+{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    padding: 15px 0px;
+}
+
+.rightAlign
+{
+    display: flex;
+    justify-content: right;
+    align-items: right; 
+}
+
+.leftL
+{
+    width: 200px;
+    text-align: left;
+    font-size: 14px;
 }
