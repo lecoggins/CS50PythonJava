@@ -23,25 +23,11 @@ h1
 
 }
 
-/* Colors for google */
-.blue
+hr
 {
-    color: #4285F4;
-}
-
-.red
-{
-    color: #DB4437;
-}
-
-.yellow
-{
-    color: #F4B400;
-}
-
-.green
-{
-    color: #0F9D58;
+    height: 1px;
+    background-color: #f7eaea;
+    border: none;
 }
 
 .searchForm
@@ -133,9 +119,8 @@ h1
 .advancedSubmit
 {
     background-color: #4285F4;
-    border: none;
-    border-radius: 2px%;
     color: white;
+    border-radius: 2px;
     font-weight: bold;
     text-align: center;
     padding: 0 16px;
