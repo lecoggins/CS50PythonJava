@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from markdown2 import Markdown
 from . import util
+from random import choice
 
 def convert_md_to_html(title):
     content = util.get_entry(title)
@@ -63,6 +64,35 @@ def newpage(request):
             html_content = convert_md_to_html(title)
             return render(request, "encyclopedia/entry.html", {
                 "title": title,
+                "content": html_content
+         })
+        
+def editpage(request):
+    if request.method == "POST":
+        title=request.POST['title']
+        content=util.get_entry(title)
+        return render(request, "encyclopedia/editpage.html",{
+            "title": title,
+            "content": content
+        })
+    
+def saveedit(request):
+    if request.method == "POST":
+        title=request.POST['title']
+        content=request.POST['content']
+        util.save_entry(title, content)
+        html_content = convert_md_to_html(title)
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "content": html_content
+        })
+
+def randompage(request):
+    entries = util.list_entries()
+    random = choice(entries)
+    html_content = convert_md_to_html(random)
+    return render(request,"encyclopedia/entry.html", {
+                "title": random,
                 "content": html_content
          })
             
