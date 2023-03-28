@@ -1,9 +1,11 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    Encyclopedia: 404 Page Not Found
+    Encyclopedia: Error
 {% endblock %}
 
 {% block body %}
-    <h1>ERROR 404 PAGE NOT FOUND</h1>
+    <h1>Error</h1>
+
+    <p>{{ message }}</p>
 {% endblock %}
