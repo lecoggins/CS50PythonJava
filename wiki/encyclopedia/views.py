@@ -46,3 +46,23 @@ def search(request):
                 "title": entry_search,
                 "results": results
         })
+
+def newpage(request):
+    if request.method == "GET":
+        return render(request, "encyclopedia/newpage.html",)
+    else:
+        title=request.POST['new_title']
+        title_exists = util.get_entry(title)
+        if title_exists is not None:
+            return render(request, "encyclopedia/error.html",{
+                "message": "This entry already exists"
+            })
+        else:
+            content=request.POST['content']
+            util.save_entry(title, content)
+            html_content = convert_md_to_html(title)
+            return render(request, "encyclopedia/entry.html", {
+                "title": title,
+                "content": html_content
+         })
+            
