@@ -1,7 +1,6 @@
 from django.shortcuts import render
-
-from . import util
 from markdown2 import Markdown
+from . import util
 
 def convert_md_to_html(title):
     content = util.get_entry(title)
@@ -24,7 +23,26 @@ def entry(request, title):
             })
     else:
         return render(request, "encyclopedia/entry.html", {
-            "title": title.capitalize(),
+            "title": title,
             "content": html_content
         })
-
+    
+def search(request):
+    if request.method == "POST":
+        entry_search = request.POST["q"]
+        html_content = convert_md_to_html(entry_search)
+        if html_content is not None:
+            return render(request, "encyclopedia/entry.html", {
+                "title": entry_search,
+                "content": html_content
+        })
+        else:
+            entries = util.list_entries()
+            results = []
+            for entry in entries:
+                if entry_search.lower() in entry.lower():
+                    results.append(entry)
+            return render(request, "encyclopedia/search.html", {
+                "title": entry_search,
+                "results": results
+        })
