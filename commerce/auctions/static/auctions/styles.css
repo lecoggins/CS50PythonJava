@@ -1,3 +1,21 @@
 body {
     padding: 10px;
 }
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.listing-image {
+    width: 70%;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid rgb(230, 21, 21);
+    border-radius: 100px;
+}
+
+.listingPageTitle {
+    text-align: center;
+}

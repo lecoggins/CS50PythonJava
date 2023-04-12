@@ -68,10 +68,38 @@ def register(request):
 
 def create_listing(request):
     if request.method == "POST":
-        return render(request, "auctions/index.html")
+        # get information about new lsiting
+        title = request.POST["listing_title"]
+        description = request.POST["listing_description"]
+        starting_price = float(request.POST["starting_price"])
+        imageURL = request.POST["image_url"]
+        category = request.POST["category"]
+        #get all information about category to allow refernce to category table
+        categoryData = Category.objects.get(category=category)
+        # get user information
+        currentUser = request.user
+        # create a new listing
+        newListing = AuctionListing(
+            title = title,
+            description = description,
+            starting_bid = starting_price,
+            image_URL = imageURL,
+            category = categoryData,
+            owner = currentUser
+        )
+        # save new listing
+        newListing.save()
+        # redirect to index
+        return HttpResponseRedirect(reverse("index"))
 
     # if get - render create listing html
     else:
         return render(request, "auctions/create.html",{
             "categories": Category.objects.all()
+        })
+    
+def listing(request, listing_id):
+        listingData = AuctionListing.objects.get(id=listing_id)
+        return render(request, "auctions/listing.html",{
+            "listingData": listingData
         })

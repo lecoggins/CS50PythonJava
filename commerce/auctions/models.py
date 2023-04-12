@@ -14,9 +14,10 @@ class Category(models.Model):
 class AuctionListing(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField()
-    starting_bid = models.IntegerField()
-    image_URL = models.CharField(max_length=100, null=True, blank=True)
+    starting_bid = models.FloatField()
+    image_URL = models.CharField(max_length=200, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="Listings")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name="user")
 
     def __str__(self):
         return f"{ self.id}: {self.title}"
