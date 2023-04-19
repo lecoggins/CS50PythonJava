@@ -11,15 +11,15 @@
         <br/>
         <textarea name="listing_description" placeholder="Add description here" rows=4 style="width: 60%"></textarea>
         <br/>
-        <label>Starting price: &nbsp</label><input type=text name="starting_price" >
+        <label>Starting price: &nbsp</label><input type=text name="starting_price">
         <br/>
-        <label>Image URL: &nbsp</label><input type=text name="image_url" >
+        <label>Image URL: &nbsp</label><input type=text name="image_url">
         <br/>
         <label> Category: &nbsp</label>
         <select name="category" required>
             <option value="" disabled selected>Select category</option>
             {% for category in categories %}
-                <option value="{{ category.category }}">{{ category }}</option>
+                <option value="{{ category.categoryName }}">{{ category }}</option>
             {% endfor %}
         </select>
         <br/>

@@ -3,19 +3,33 @@
 {% block body %}
     <h2>Active Listings</h2>
 
+        <div>
+            <form action="{% url 'category_listings' %}" method="POST">
+                {% csrf_token %}
+                <label> Category: &nbsp</label>
+                <select name="category" required>
+                    <option value="all" >All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.categoryName }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-info">Select</button>
+            </form>
+        </div>
+
+        <br/>
+
         <div class="container">
             <div class="row">
-            <!--ADD CLASSES HERE d-flex align-items-stretch-->
-
                 {% for listing in active_listings %}
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-md-6 col-lg-3" style="margin-bottom: 10px">
                         <div class="card h-100">
                             <img class="card-img-top" src="{{ listing.image_URL }}" alt=" No Image of {{ listing.title }}">
                             <div class="card-body">
                                 <h3 class="card-title">{{ listing.title }}</h3>
                                 <p class="card-text">{{ listing.description }}</p>
-                                <p class="card-text"> Current Bid: £{{ listing.starting_bid|floatformat:2 }}</p>
-                                <a href="{% url 'listing' listing_id=listing.id %}"class="btn btn-primary">View listing</a>
+                                <p class="card-text"> Current Bid: £{{ listing.price|floatformat:2 }}</p>
+                                <a href="{% url 'listing' listing_id=listing.id %}" class="btn btn-info">View listing</a>
                             </div>
                         </div>
                     </div>
