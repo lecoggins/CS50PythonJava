@@ -1,0 +1,97 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if message %}
+        <div class="alert alert-{{ type }}" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    {% if listingData.isActive == False and currentUser == highestBidder %}
+        <div class="alert alert-success" role="alert">You have won this listing!</div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">This listing is now closed!</div>
+    {% endif %}
+   
+
+    <h2 class="listing-title">{{ listingData.title }}</h2>
+    <br/>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <img class="listing-image" src="{{ listingData.image_URL }}" alt="Card image cap">
+                <br/>
+                {% if user.is_authenticated and listingData.isActive %}
+                    {% if currentUser == listingData.owner %}
+                        <form action="{% url 'closeListing' listing_id=listingData.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" style="margin-top: 10px">Close Listing</button>
+                        </form>
+                    {% elif inWatchlist %}
+                        <form action="{% url 'removeWatchlist' listing_id=listingData.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" style="margin-top: 10px">Remove from Watchlist</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'addWatchlist' listing_id=listingData.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success" style="margin-top: 10px">Add to Watchlist</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-6">
+                <p>Description: {{listingData.description}}</p>
+                <p>Owner: {{listingData.owner}} </p>
+                <p>Highest Bid: £{{ listingData.price }} </p>
+                {% if user.is_authenticated and listingData.isActive %}
+                    <form action="{% url 'bid' listing_id=listingData.id %}" method="POST">
+                        {% csrf_token %}
+                        <label>Bid: </label> <input class="search" type="text" name="bid" placeholder="Enter Bid">
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div> 
+    <br/>
+
+    <div class="row d-flex justify-content-left" style="margin-left: 10px">
+        <div class="col-md-8 col-lg-8">
+            <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+            <div class="card-body p-4">
+                <h4>Comments</h4>
+                <div class="form-outline mb-4">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'comment' listing_id=listingData.id %}" method="POST">
+                        {% csrf_token %}
+                        <textarea class="comment" name="comment" placeholder="Type comment here"></textarea>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </form>
+                {% endif %}
+                </div>
+                {% for comment in comments %}  
+                    <div class="card mb-4" style="width: 60%">
+                        <div class="card-body">
+                            <p>{{ comment.message }}</p>
+                    
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <p class="small mb-0 ms-2">{{ comment.author }}</p>
+                                </div>
+                                <div class="d-flex flex-row align-items-center">
+                                    <p class="small text-muted mb-0">{{ comment.dateTime }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+{% endblock %}
