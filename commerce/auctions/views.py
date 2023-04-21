@@ -9,6 +9,7 @@ from .models import User
 from .models import Category
 from .models import AuctionListing
 from .models import Comment
+from .models import Bid
 
 
 def index(request):
@@ -97,11 +98,19 @@ def create_listing(request):
         categoryData = Category.objects.get(categoryName=category)
         # get user information
         currentUser = request.user
+        # new bid
+        newBid = Bid(
+            bid = starting_price,
+            bidder = currentUser
+        )
+
+        newBid.save()
+
         # create a new listing
         newListing = AuctionListing(
             title = title,
             description = description,
-            price = starting_price,
+            price = newBid,
             image_URL = imageURL,
             category = categoryData,
             owner = currentUser,
@@ -123,11 +132,13 @@ def listing(request, listing_id):
     currentUser = request.user
     inWatchlist = currentUser in listingData.watchlist.all()
     comments = Comment.objects.filter(listing=listingData)
+    highestBidder = listingData.price.bidder
     return render(request, "auctions/listing.html",{
         "listingData": listingData,
         "inWatchlist": inWatchlist,
         "currentUser": currentUser,
-        "comments":comments
+        "comments": comments,
+        "highestBidder": highestBidder,
     })
 
 def add_watchlist(request, listing_id):
@@ -182,4 +193,51 @@ def comment(request, listing_id):
         # save new comment
         newComment.save()
         return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
+    
+def bid(request, listing_id):
+    if request.method == "POST":
+        listingData = AuctionListing.objects.get(id=listing_id)
+        currentUser = request.user
+        inWatchlist = currentUser in listingData.watchlist.all()
+        comments = Comment.objects.filter(listing=listingData)
+        newBid = float(request.POST['bid'])
+        currentPrice = float(listingData.price.bid)
+        danger = "danger"
+        if (newBid <= currentPrice):
+            message = "Bid must be greater than the current price"
+            return render(request, "auctions/listing.html",{
+                "listingData": listingData,
+                "inWatchlist": inWatchlist,
+                "currentUser": currentUser,
+                "comments": comments,
+                "message": message,
+                "type": danger
+            })
+        else:
+            enterBid = Bid(
+                bid = newBid,
+                bidder = currentUser
+            )
+            enterBid.save()
 
+            listingData.price = enterBid
+            listingData.numberOfBids = listingData.numberOfBids + 1
+            listingData.save()
+
+            message = "Bid successful"
+            success = "success"
+            return render(request, "auctions/listing.html",{
+                "listingData": listingData,
+                "inWatchlist": inWatchlist,
+                "currentUser": currentUser,
+                "comments": comments,
+                "message": message,
+                "type": success
+            })
+
+def close_listing(request, listing_id):
+    if request.method=="POST":
+        listingData = AuctionListing.objects.get(id=listing_id)
+        listingData.isActive = "False"
+        listingData.save()
+        return HttpResponseRedirect(reverse("listing", args=(listing_id, )))
