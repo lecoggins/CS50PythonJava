@@ -1,0 +1,38 @@
+textarea {
+    min-height: 400px;
+}
+
+.emailBoxRead {
+    background-color: rgb(184, 184, 184);
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1.5px solid white;
+}
+
+.emailBoxUnread {
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1.5px solid rgb(184, 184, 184);
+}
+.emailIntro {
+    background-color: rgb(221, 221, 221);
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1.5px solid rgb(141, 141, 141);
+}
+
+.emailBody {
+    background-color: white;
+    width: 100%;
+    padding: 10px;
+    border-left: 1.5px solid rgb(141, 141, 141);
+    border-right: 1.5px solid rgb(141, 141, 141);
+}
+
+#reply{
+    text-align: right;
+}
