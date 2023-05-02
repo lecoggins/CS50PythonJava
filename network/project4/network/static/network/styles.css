@@ -1,6 +1,7 @@
 body{
     color:rgb(73, 73, 73);
     font-family: Helvetica;
+    text-align: left;
 }
 
 h1{
@@ -39,4 +40,35 @@ img{
 .pageTitle{
     font-size: 80px;
     color: rgb(73, 73, 73);
+}
+
+.container{
+    text-align: left;
+    margin: 20px;
+    border: 2px rgb(107, 107, 107) solid;
+    border-radius:5px;
+    padding: 10px;
+    width: auto;
+}
+
+#postImage{
+    margin-top: 0px;
+    height: 80px;
+    width: 80px;
+}
+
+.newPostBody{
+    width: 100%;
+    height: 80px;
+    padding: 0 0 50px 0;
+}
+
+.btn-light{
+    margin-top:10px;
+}
+
+#date{
+    font-size: 12px;
+    color:rgb(170, 169, 169);
+    margin: 3px;
 }

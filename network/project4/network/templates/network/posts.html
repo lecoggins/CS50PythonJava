@@ -1,7 +1,44 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <div class="pageTitle">
-        <h1>All Posts</h1>
+    <div class="container">
+        <h5>New Post</h3>
+        <div class="row" id="newPostBox">
+            <div class="col-1" id="newPostBox">
+                <img id="postImage" src={{ user.image }}>
+            </div>
+            <div class = "col-11">
+                <form action="{% url 'all_posts' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" class="newPostBody" name="body" placeholder="What is on your mind?">
+                    <button type="submit" class="btn btn-light">Post</button>
+                </form>
+            </div>
+        </div>
     </div>
+
+    {% for post in posts %}
+        <div class="container">
+            <h5>{{ post.user }}</h3>
+            <div class="row" id="postBoxMain">
+                <div class="col-1" id="newPostBox">
+                    <img id="postImage" src={{ post.user.image }}>
+                </div>
+                <div class = "col-11">
+                    <p> {{ post.body }}</p>
+                </div>
+            
+            </div>
+            <div id="heart">
+                <span style="color: red; font-size: 20px">&#9829;</span>
+                <span style="color: rgb(73, 73, 73)">{{ post.likes }}</span>
+            </div>
+
+            <div class="row" id="date">
+                {{ post.timestamp }}
+            </div>
+        </div>
+
+    {% endfor %}
+
 {% endblock %}

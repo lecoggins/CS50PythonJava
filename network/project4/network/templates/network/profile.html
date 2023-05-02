@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1>PROFILE</h1>
+    {% for post in posts %}
+    <div class="container">
+        <h5>{{ post.user }}</h3>
+        <div class="row" id="postBoxMain">
+            <div class="col-1" id="newPostBox">
+                <img id="postImage" src={{ post.user.image }}>
+            </div>
+            <div class = "col-11">
+                <p> {{ post.body }}</p>
+            </div>
+        
+        </div>
+        <div id="heart">
+            <span style="color: red; font-size: 20px">&#9829;</span>
+            <span style="color: rgb(73, 73, 73)">{{ post.likes }}</span>
+        </div>
+
+        <div class="row" id="date">
+            {{ post.timestamp }}
+        </div>
+    </div>
+
+{% endfor %}
+{% endblock %}
