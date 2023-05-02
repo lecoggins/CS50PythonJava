@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    image = models.CharField(max_length=1000, blank=True)
+    image = models.CharField(max_length=1000, blank=True, default="https://www.shutterstock.com/image-vector/default-avatar-profile-trendy-style-260nw-1759726295.jpg")
 
 class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="user_posts")
