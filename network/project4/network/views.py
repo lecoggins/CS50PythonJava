@@ -7,6 +7,7 @@ from django.urls import reverse
 
 from .models import User
 from .models import Post
+from .models import Follower
 
 
 def index(request):
@@ -88,17 +89,27 @@ def all_posts(request):
         })
     
 def profile(request, user_id):
-    if request.method == "POST":
-        requestedUser = User.objects.get(id=user_id)
-        posts = Post.objects.filter(user=requestedUser)
-        return render(request, "network/profile.html",{
-            "posts": posts,
-            "user": requestedUser
-        })
-    else:
-        requestedUser = User.objects.get(id=user_id)
-        posts = Post.objects.filter(user=requestedUser)
-        return render(request, "network/profile.html",{
-            "posts": posts,
-            "user": requestedUser
-        })
+    requestedUser = User.objects.get(id=user_id)
+    posts = Post.objects.filter(user=requestedUser)
+    currentUser = request.user
+    followers = Follower.objects.filter(user=requestedUser)
+    isFollowing = "False"
+
+    for follower in followers:
+        if follower.follower == currentUser:
+            isFollowing = "True"
+
+    noFollowers = len(followers)
+    noPosts = len(Post.objects.filter(user=requestedUser))
+    noFollowing = len(Follower.objects.filter(follower=requestedUser))
+
+    return render(request, "network/profile.html",{
+        "posts": posts,
+        "userName": requestedUser.username,
+        "currentUser": currentUser,
+        "noFollowers": noFollowers,
+        "noPosts": noPosts,
+        "noFollowing": noFollowing,
+        "followers": followers,
+        "isFollowing": isFollowing
+    })
