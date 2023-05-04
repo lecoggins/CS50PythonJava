@@ -1,8 +1,29 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <h1>PROFILE</h1>
-    {% for post in posts %}
+    <h1>{{ user }}</h1>
+
+   <div class="follow">
+        <div class="row">
+            <div class="col-1">
+                posts 
+            </div>
+            <div class="col-1">
+                followers
+            </div>
+            <div class="col-1">
+                following
+            </div>
+            <div class="col-9">
+                {% if user.is_authenticated %}
+                    <button> 
+                {% endif %}
+            </div>
+
+        </div>
+   </div>
+
+    {% for post in posts reversed %}
     <div class="container">
         <h5>{{ post.user }}</h3>
         <div class="row" id="postBoxMain">

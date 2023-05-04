@@ -72,3 +72,16 @@ img{
     color:rgb(170, 169, 169);
     margin: 3px;
 }
+
+.follow{
+    margin-left: 20px;
+}
+
+.userName{
+    color:rgb(73, 73, 73);
+}
+
+.userName:hover{
+    color:rgb(170, 169, 169);
+    text-decoration: none;
+}

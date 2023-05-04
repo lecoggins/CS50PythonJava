@@ -92,11 +92,13 @@ def profile(request, user_id):
         requestedUser = User.objects.get(id=user_id)
         posts = Post.objects.filter(user=requestedUser)
         return render(request, "network/profile.html",{
-            "posts": posts
+            "posts": posts,
+            "user": requestedUser
         })
     else:
         requestedUser = User.objects.get(id=user_id)
         posts = Post.objects.filter(user=requestedUser)
         return render(request, "network/profile.html",{
-            "posts": posts
+            "posts": posts,
+            "user": requestedUser
         })
