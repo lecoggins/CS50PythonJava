@@ -8,6 +8,10 @@ h1{
     margin-left: 10px;
 }
 
+.page_title{
+    margin-left: 10px;
+}
+
 .navbar-custom {
     background-color: rgba(235, 235, 235, 0.671);
     margin-left: 0px;
@@ -50,6 +54,7 @@ img{
     padding: 10px;
     width: auto;
 }
+
 
 #postImage{
     margin-top: 0px;

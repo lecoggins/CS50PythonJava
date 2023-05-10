@@ -1,0 +1,43 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1 class="page_title">Following Posts</h1>
+    {% if user.is_authenticated%}
+        {% for post in posts %}
+            <div class="container">
+                <a style="text-decoration: none;" href="{% url 'profile' user_id=post.user.id %}"><h5 class="userName">{{ post.user }}</h5></a>
+                <div class="row" id="postBoxMain">
+                    <div class="col-1" id="newPostBox">
+                        <a href="{% url 'profile' user_id=post.user.id %}"><img id="postImage" src={{ post.user.image }}></a>
+                    </div>
+                    <div class = "col-11">
+                        <p> {{ post.body }}</p>
+                    </div>
+                
+                </div>
+                <div id="heart">
+                    <span style="color: red; font-size: 20px">&#9829;</span>
+                    <span style="color: rgb(73, 73, 73)">{{ post.likes }}</span>
+                </div>
+
+                <div class="row" id="date">
+                    {{ post.timestamp }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Must be logged in</p>
+    {% endif %}
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination d-flex justify-content-center">
+            {% if posts.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+            {% endif %}   
+            {% if posts.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number}}">Next</a></li>
+            {% endif %}
+        </ul>
+      </nav>
+
+{% endblock %}

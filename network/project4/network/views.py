@@ -4,14 +4,48 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
+import json
+from django.http import JsonResponse
 
 from .models import User
 from .models import Post
 from .models import Follower
 
+def edit(request, post_id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        edit_post = Post.objects.get(pk=post_id)
+        edit_post.body = data["content"]
+        edit_post.save()
+        return JsonResponse({"message": "Change Successful", "data": data["content"]})
+
 
 def index(request):
-    return render(request, "network/index.html")
+    if request.method == "POST":
+        
+        currentUser = request.user
+        postBody = request.POST['body']
+        dateTime = datetime.now()
+
+        newPost = Post(
+            user = currentUser,
+            body = postBody,
+            timestamp = dateTime
+        )
+        newPost.save()
+
+        posts = Post.objects.all().order_by("id").reverse()
+        return HttpResponseRedirect(reverse("index"))
+    
+    else:
+        posts = Post.objects.all().order_by("id").reverse()
+        paginated = Paginator(posts, 10)
+        pageNumber = request.GET.get('page')
+        pagePosts = paginated.get_page(pageNumber)
+        return render(request, "network/index.html", {
+            "posts": pagePosts,
+        })
 
 
 def login_view(request):
@@ -65,51 +99,85 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-def all_posts(request):
-    if request.method == "POST":
-        
-        currentUser = request.user
-        postBody = request.POST['body']
-        dateTime = datetime.now()
-
-        newPost = Post(
-            user = currentUser,
-            body = postBody,
-            timestamp = dateTime
-        )
-        newPost.save()
-
-        posts = Post.objects.all()
-        return HttpResponseRedirect(reverse("all_posts"))
-    
-    else:
-        posts = Post.objects.all()
-        return render(request, "network/posts.html", {
-            "posts": posts
-        })
     
 def profile(request, user_id):
     requestedUser = User.objects.get(id=user_id)
-    posts = Post.objects.filter(user=requestedUser)
+    posts = Post.objects.filter(user=requestedUser).order_by("id").reverse()
     currentUser = request.user
     followers = Follower.objects.filter(user=requestedUser)
     isFollowing = "False"
-
+    isCurrent = "False"
     for follower in followers:
         if follower.follower == currentUser:
             isFollowing = "True"
-
+    if currentUser == requestedUser:
+        isCurrent = "True"
     noFollowers = len(followers)
     noPosts = len(Post.objects.filter(user=requestedUser))
     noFollowing = len(Follower.objects.filter(follower=requestedUser))
 
+    paginated = Paginator(posts, 10)
+    pageNumber = request.GET.get('page')
+    pagePosts = paginated.get_page(pageNumber)
+
     return render(request, "network/profile.html",{
-        "posts": posts,
+        "posts": pagePosts,
         "userName": requestedUser.username,
         "currentUser": currentUser,
         "noFollowers": noFollowers,
         "noPosts": noPosts,
         "noFollowing": noFollowing,
         "followers": followers,
-        "isFollowing": isFollowing
+        "isFollowing": isFollowing,
+        "isCurrent": isCurrent,
+        "requestedUser": requestedUser
+    })
+
+def follow(request):
+    if request.method=="POST":
+        currentUser = request.user
+        otheruser = request.POST['userToFollow']
+        userFollow = User.objects.get(username=otheruser)
+        user_id = userFollow.id
+
+        newFollow = Follower(
+            user = userFollow,
+            follower = currentUser
+        )
+        newFollow.save()
+        return HttpResponseRedirect(reverse(profile, kwargs={'user_id': user_id}))
+
+
+
+def unfollow(request):
+    if request.method=="POST":
+        currentUser = request.user
+        otheruser = request.POST['userToUnfollow']
+        userFollow = User.objects.get(username=otheruser)
+        user_id = userFollow.id
+
+        unfollow = Follower.objects.get(user = userFollow, follower = currentUser)
+        unfollow.delete()
+        return HttpResponseRedirect(reverse(profile, kwargs={'user_id': user_id}))
+
+def following(request):
+    currentUser = request.user
+    allFollowing = Follower.objects.filter(follower = currentUser)
+    following = []
+    for each in allFollowing:
+        follow = each.user
+        following.append(follow)
+    posts = []
+    allPosts = Post.objects.all().order_by("id").reverse()
+    for post in allPosts:
+        if post.user in following:
+            posts.append(post)
+
+    paginated = Paginator(posts, 10)
+    pageNumber = request.GET.get('page')
+    pagePosts = paginated.get_page(pageNumber)
+
+    return render(request, "network/following.html",{
+        "posts": pagePosts,
+        "following": following
     })
