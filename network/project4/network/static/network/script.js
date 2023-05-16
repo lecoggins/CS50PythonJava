@@ -5,7 +5,6 @@ function getCookie(name){
         return parts.pop().split(';').shift();
 }
 
-
 function saveChanges(id){
     const textareaValue = document.getElementById(`textarea_${id}`).value;
     const content= document.getElementById(`postBody_${id}`);
@@ -33,4 +32,4 @@ function saveChanges(id){
             document.body.removeChild(modalsBackdrops[i]);
           }
     })
-};
+}

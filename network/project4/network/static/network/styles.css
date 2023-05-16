@@ -90,3 +90,14 @@ img{
     color:rgb(170, 169, 169);
     text-decoration: none;
 }
+
+#heart{
+    margin:5px;
+}
+
+#likeButton{
+    font-size: 12px;
+    width: 55px;
+    text-align: center;
+    padding: 3px;
+}

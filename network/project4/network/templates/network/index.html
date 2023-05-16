@@ -1,6 +1,39 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+    <script>
+        function likeHandler(id, userLikes){
+            const btn = document.getElementById(likeButton);
+            btn.innerHTML = ''
+            btn.classList.remove('btn btn-danger')
+            btn.classList.remove('btn btn-success')
+
+            if(userLikes.indexOf(id) >= 0){
+                var liked = true;
+            } else {
+                var liked = false;
+            }
+
+            if (liked === false){
+                fetch(`/unlike/${id}`)
+                .then(response=> response.json)
+                .then( result => {
+                    btn.classList.add('btn btn-success')
+                    btn.innerHTML = 'Like'
+                })
+                
+            } else {
+                fetch(`/like/${id}`)
+                .then(response=> response.json)
+                .then( result => {
+                    btn.classList.add('btn btn-danger')
+                    btn.innerHTML= 'Unlike'
+                })
+            }
+            liked = !liked
+        }
+    </script>
+
     <h1 class="page_title">All Posts</h1>
     {% if user.is_authenticated %}
         <div class="container">
@@ -34,7 +67,14 @@
             </div>
             <div id="heart">
                 <span style="color: red; font-size: 20px">&#9829;</span>
-                <span style="color: rgb(73, 73, 73)">{{ post.likes }}</span>
+                <span style="color: rgb(73, 73, 73)">
+                    {{ post.likes }}
+                    {% if post.id in userLikes%}
+                        <button onclick="likeHandler({{ post.id }}, {{ userLikes }})" id="likeButton" class="btn btn-danger">UnLike</button>
+                    {% else %}
+                        <button onclick="likeHandler({{ post.id }}, {{ userLikes }})" id="likeButton" class="btn btn-success">Like</button>
+                    {% endif %}
+                </span>
             </div>
 
             <div class="row" id="date">

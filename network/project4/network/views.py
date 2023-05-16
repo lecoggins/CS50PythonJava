@@ -8,9 +8,23 @@ from django.core.paginator import Paginator
 import json
 from django.http import JsonResponse
 
-from .models import User
-from .models import Post
-from .models import Follower
+from .models import User, Post, Follower, Like
+
+def like(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    user = user.objects.get(pk=request.user.id)
+    newlike = Like(user=user, post=post)
+    newlike.save()
+    return JsonResponse({"message": "Like added"})
+
+    
+def unlike(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    user = user.objects.get(pk=request.user.id)
+    like = Like.objects.filter(user=user, post=post)
+    like.delete()
+    post=()
+    return JsonResponse({"message": "Like removed"})
 
 def edit(request, post_id):
     if request.method == "POST":
@@ -43,8 +57,19 @@ def index(request):
         paginated = Paginator(posts, 10)
         pageNumber = request.GET.get('page')
         pagePosts = paginated.get_page(pageNumber)
+        likes = Like.objects.all()
+
+        userLikes = []
+        try:
+            for like in likes:
+                if like.user.id == request.user.id:
+                    userLikes.append(like.post.id)
+        except:
+            userLikes = []
+
         return render(request, "network/index.html", {
             "posts": pagePosts,
+            "userLikes": userLikes
         })
 
 
